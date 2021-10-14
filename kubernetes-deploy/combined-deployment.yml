@@ -1,0 +1,150 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-service
+
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert --volumes hostPath
+    kompose.version: 1.17.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres
+  name: postgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: postgres
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: configapp
+        - name: POSTGRES_PASSWORD
+          value: patnox
+        - name: POSTGRES_USER
+          value: root
+        image: postgres:14
+        name: postgres
+        ports:
+        - containerPort: 5432
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-hostpath0
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: ./postgres-data
+        name: postgres-hostpath0
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert --volumes hostPath
+    kompose.version: 1.17.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres
+  name: postgres
+spec:
+  ports:
+  - name: "5432"
+    port: 5432
+    targetPort: 5432
+  selector:
+    io.kompose.service: postgres
+status:
+  loadBalancer: {}
+
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert --volumes hostPath
+    kompose.version: 1.17.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: configapp
+  name: configapp
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: configapp
+    spec:
+      containers:
+      - env:
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: patnox
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:postgresql://postgres:5432/configapp
+        - name: SPRING_DATASOURCE_USERNAME
+          value: root
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: create-drop
+        - name: SERVER_PORT
+          value: 8096
+        image: patnox/kyosk_service:v1.0
+        name: configapp
+        ports:
+        - containerPort: 8096
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/tmp
+          name: configapp-hostpath0
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: ./configapp/var/tmp
+        name: configapp-hostpath0
+status: {}
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert --volumes hostPath
+    kompose.version: 1.17.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: configapp
+  name: configapp
+spec:
+  ports:
+  - name: "8096"
+    port: 8096
+    targetPort: 8096
+  selector:
+    io.kompose.service: configapp
+status:
+  loadBalancer: {}
+
+
+---
+
+
