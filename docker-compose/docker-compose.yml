@@ -1,0 +1,36 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+         - POSTGRES_PASSWORD=patnox
+         - POSTGRES_USER=root
+         - POSTGRES_DB=configapp
+    restart: always
+# SpringBoot App
+  configapp:
+    image: patnox/kyosk_service:v1.0
+    container_name: configapp
+    depends_on:
+      - postgres
+    expose:
+      - 8096
+    ports:
+      - 8096:8096
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/configapp
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=patnox
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+    volumes:
+          - ./configapp/var/tmp:/var/tmp
+    restart: always
+volumes:
+  postgres-data:

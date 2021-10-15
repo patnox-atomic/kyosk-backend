@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "0fc26dc5-9031-430e-8255-9471cc7cf0e7",
+		"name": "KyoskApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Configs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8096/configs",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"configs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a single Config",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8096/configs/datacenter-66",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"configs",
+						"datacenter-66"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Config",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"datacenter-66\",\n    \"metadata\": {\n        \"monitoring\": {\n            \"enabled\": true\n        },\n        \"limits\": {\n            \"cpu\": {\n                \"enabled\": true,\n                \"value\": \"250m\"\n            }\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8096/configs",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"configs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Config",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8096/configs/datacenter-66",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"configs",
+						"datacenter-66"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit a Config",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"datacenter-66\",\n    \"metadata\": {\n        \"monitoring\": {\n            \"enabled\": false\n        },\n        \"limits\": {\n            \"cpu\": {\n                \"enabled\": false,\n                \"value\": \"250m\"\n            }\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8096/configs/datacenter-66",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"configs",
+						"datacenter-66"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit a Config through Patch",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"datacenter-66\",\n    \"metadata\": {\n        \"monitoring\": {\n            \"enabled\": false\n        },\n        \"limits\": {\n            \"cpu\": {\n                \"enabled\": false,\n                \"value\": \"250m\"\n            }\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8096/configs/datacenter-66",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"configs",
+						"datacenter-66"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search For Configs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8096/search?metadata.monitoring.enabled=false",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8096",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "metadata.monitoring.enabled",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
